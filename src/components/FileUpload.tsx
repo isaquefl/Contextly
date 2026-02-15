@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { useApp } from '@/context/AppContext';
 
-const MAX_SIZE = 5 * 1024 * 1024;
+const MAX_SIZE = 50 * 1024 * 1024; // 50MB
 const ACCEPT = '.pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain';
 
 export function FileUpload() {
@@ -16,7 +16,7 @@ export function FileUpload() {
     async (file: File) => {
       setError(null);
       if (file.size > MAX_SIZE) {
-        setError('File too large. Maximum size is 5MB.');
+        setError('File too large. Maximum size is 50MB.');
         return;
       }
 
@@ -84,7 +84,7 @@ export function FileUpload() {
               Drop a file or click to upload
             </p>
             <p className="mt-1 text-xs text-zinc-500">
-              PDF, DOCX, TXT — max 5MB
+              PDF, DOCX, TXT — max 50MB
             </p>
           </>
         )}

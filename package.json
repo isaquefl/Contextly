@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@ai-sdk/groq": "^1.0.0",
-    "@ai-sdk/openai": "^3.0.29",
     "@ai-sdk/react": "^3.0.88",
     "ai": "^6.0.86",
     "mammoth": "^1.11.0",

@@ -2,10 +2,16 @@
 
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { AnalysisButtons } from './AnalysisButtons';
 import type { TextChunk } from '@/lib/chunking';
+
+interface AnalysisBlock {
+  id: number;
+  type: string;
+  result: string;
+}
 
 export function ChatPanel() {
   const {
@@ -13,6 +19,7 @@ export function ChatPanel() {
     strictMode,
     estimatedTokens,
   } = useApp();
+  const [analysisBlocks, setAnalysisBlocks] = useState<AnalysisBlock[]>([]);
   const bodyRef = useRef<{
     context: string;
     chunks: TextChunk[];
@@ -32,15 +39,13 @@ export function ChatPanel() {
     }),
   });
 
-  const handleAnalysisResult = useCallback(
-    (type: string, result: string) => {
-      const label = type.replace(/([A-Z])/g, ' $1').trim();
-      sendMessage({
-        text: `[Analysis: ${label}]\n\n${result}`,
-      });
-    },
-    [sendMessage]
-  );
+  const handleAnalysisResult = useCallback((type: string, result: string) => {
+    const label = type.replace(/([A-Z])/g, ' $1').trim();
+    setAnalysisBlocks((prev) => [
+      ...prev,
+      { id: Date.now(), type: label, result },
+    ]);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,16 +60,18 @@ export function ChatPanel() {
 
   const handleExport = useCallback(
     (format: 'md' | 'txt') => {
-      const content = messages
-        .map((m) => {
-          const role = m.role === 'user' ? '**You:**' : '**Contextly:**';
-          const t = m.parts
-            ?.filter((p) => p.type === 'text')
-            .map((p) => (p as { text?: string }).text)
-            .join('') ?? '';
-          return `${role}\n${t}`;
-        })
-        .join('\n\n');
+      const parts = messages.map((m) => {
+        const role = m.role === 'user' ? '**You:**' : '**Contextly:**';
+        const t = m.parts
+          ?.filter((p) => p.type === 'text')
+          .map((p) => (p as { text?: string }).text)
+          .join('') ?? '';
+        return `${role}\n${t}`;
+      });
+      analysisBlocks.forEach((b) => {
+        parts.push(`**Contextly (${b.type}):**\n${b.result}`);
+      });
+      const content = parts.join('\n\n');
 
       const blob = new Blob([content], {
         type: format === 'md' ? 'text/markdown' : 'text/plain',
@@ -76,22 +83,23 @@ export function ChatPanel() {
       a.click();
       URL.revokeObjectURL(url);
     },
-    [messages]
+    [messages, analysisBlocks]
   );
 
   const copyAll = useCallback(() => {
-    const text = messages
-      .map((m) => {
-        const role = m.role === 'user' ? 'You:' : 'Contextly:';
-        const t = m.parts
-          ?.filter((p) => p.type === 'text')
-          .map((p) => (p as { text?: string }).text)
-          .join('') ?? '';
-        return `${role}\n${t}`;
-      })
-      .join('\n\n');
-    navigator.clipboard.writeText(text);
-  }, [messages]);
+    const parts = messages.map((m) => {
+      const role = m.role === 'user' ? 'You:' : 'Contextly:';
+      const t = m.parts
+        ?.filter((p) => p.type === 'text')
+        .map((p) => (p as { text?: string }).text)
+        .join('') ?? '';
+      return `${role}\n${t}`;
+    });
+    analysisBlocks.forEach((b) => {
+      parts.push(`Contextly (${b.type}):\n${b.result}`);
+    });
+    navigator.clipboard.writeText(parts.join('\n\n'));
+  }, [messages, analysisBlocks]);
 
   const hasDoc = !!document?.text?.trim();
 
@@ -102,7 +110,7 @@ export function ChatPanel() {
           Chat
         </h2>
         <AnalysisButtons onResult={handleAnalysisResult} />
-        {messages.length > 0 && (
+        {(messages.length > 0 || analysisBlocks.length > 0) && (
           <div className="flex gap-2">
             <button
               onClick={copyAll}
@@ -127,11 +135,11 @@ export function ChatPanel() {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4">
-        {messages.length === 0 && (
+        {messages.length === 0 && analysisBlocks.length === 0 && (
           <div className="flex h-full flex-col items-center justify-center text-center">
             <p className="text-zinc-500 dark:text-zinc-400">
               {hasDoc
-                ? 'Ask questions about your document.'
+                ? 'Ask questions about your document or use the buttons above.'
                 : 'Upload or paste a document to get started.'}
             </p>
             {hasDoc && (
@@ -164,6 +172,19 @@ export function ChatPanel() {
                     <span key={i}>{(part as { text?: string }).text}</span>
                   ) : null
                 )}
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {analysisBlocks.map((block) => (
+          <div key={block.id} className="mb-4 mr-8 flex justify-start">
+            <div className="max-w-[85%] rounded-2xl bg-white px-4 py-2.5 shadow-sm ring-1 ring-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-zinc-700">
+              <div className="mb-1 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                {block.type}
+              </div>
+              <div className="whitespace-pre-wrap break-words text-sm">
+                {block.result}
               </div>
             </div>
           </div>

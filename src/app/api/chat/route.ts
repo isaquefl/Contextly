@@ -70,6 +70,7 @@ export async function POST(req: Request) {
       contextToUse = chunksToContext(chunks.slice(0, 5));
     }
 
+    // Com documento: IA analisa o arquivo e responde só com base nele. Sem documento: resposta livre.
     const systemPrompt = contextToUse
       ? strictMode === 'strict'
         ? `${STRICT_SYSTEM}\n"""\n${contextToUse}\n"""`
@@ -77,7 +78,7 @@ export async function POST(req: Request) {
       : FALLBACK_SYSTEM;
 
     const result = streamText({
-      model: groq(GROQ_MODEL),
+      model: groq(GROQ_MODEL) as unknown as Parameters<typeof streamText>[0]['model'],
       system: systemPrompt,
       messages: await convertToModelMessages(messages),
     });

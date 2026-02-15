@@ -2,7 +2,7 @@
 
 ![Full Stack Project](https://img.shields.io/badge/Full_Stack-Project-22c55e?style=for-the-badge&logo=vercel&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
-![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o_mini-412991?style=flat-square&logo=openai)
+![Groq](https://img.shields.io/badge/Groq-Llama_3.3_70B-22c55e?style=flat-square)
 
 > **RAG-powered document analysis** — Upload PDFs, DOCX, or paste text. Ask questions, extract insights, get citations.
 
@@ -27,12 +27,12 @@
 | Layer | Stack |
 |-------|-------|
 | **Frontend** | React 19, Next.js 16 (App Router), Tailwind CSS 4 |
-| **AI & Chat** | Vercel AI SDK, OpenAI GPT-4o-mini |
+| **AI & Chat** | Vercel AI SDK, Groq (Llama 3.3 70B) |
 | **Processing** | Intelligent chunking, relevance-based context injection |
 
 ### Features
 
-- **File upload** — PDF, DOCX, TXT (max 5MB)
+- **File upload** — PDF, DOCX, TXT (max 50MB)
 - **Smart chunking** — Sends only relevant chunks to the model
 - **Strict / Assisted mode** — Answers only from document vs. light inference
 - **Citations** — Click chunks to highlight in the document
@@ -48,7 +48,7 @@
 git clone <repo>
 cd contextly
 npm install
-echo "OPENAI_API_KEY=sk-your-key" > .env.local
+echo "GROQ_API_KEY=your-groq-key" > .env.local
 npm run dev
 ```
 
@@ -96,12 +96,12 @@ src/
 | Camada | Tecnologias |
 |--------|-------------|
 | **Frontend** | React 19, Next.js 16 (App Router), Tailwind CSS 4 |
-| **IA e Chat** | Vercel AI SDK, OpenAI GPT-4o-mini |
+| **IA e Chat** | Vercel AI SDK, Groq (Llama 3.3 70B) |
 | **Processamento** | Chunking inteligente, injeção de contexto por relevância |
 
 ### Funcionalidades
 
-- **Upload de arquivos** — PDF, DOCX, TXT (máx. 5MB)
+- **Upload de arquivos** — PDF, DOCX, TXT (máx. 50MB)
 - **Chunking inteligente** — Envia apenas blocos relevantes ao modelo
 - **Modo Estrito / Assistido** — Responde só do documento vs. inferências leves
 - **Citações** — Clique em chunks para destacar no documento
@@ -117,7 +117,7 @@ src/
 git clone <repo>
 cd contextly
 npm install
-echo "OPENAI_API_KEY=sk-sua-chave" > .env.local
+echo "GROQ_API_KEY=sua-chave-groq" > .env.local
 npm run dev
 ```
 
@@ -127,9 +127,11 @@ Acesse **http://localhost:3000**.
 
 ## Security & performance
 
+- **Chaves:** Apenas `.env` (nunca em `.ts` público). Repo isaquefl: nenhum dado sensível ou API key em código.
+- **Resultados:** Salve resumos/pesquisas em `.env` local ou em arquivos markdown de documentação, não em fontes versionadas.
 - Documents are processed in-memory; no permanent storage without consent
 - Text sanitization on extraction
-- Max file size: 5MB with clear feedback
+- Max file size: 50MB with clear feedback
 - Streaming responses for low latency
 - Chunk cache to avoid reprocessing
 

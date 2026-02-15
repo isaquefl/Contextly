@@ -23,18 +23,29 @@ export function AnalysisButtons({
   const { document } = useApp();
   const [loading, setLoading] = useState<string | null>(null);
 
-  if (!document?.text?.trim()) return null;
+  const hasDoc = !!document?.text?.trim();
 
   const run = async (type: string) => {
+    if (!hasDoc) {
+      onResult(type, 'Envie ou cole um documento antes de usar os botões de análise.');
+      return;
+    }
     setLoading(type);
     try {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: document.text, type }),
+        body: JSON.stringify({ text: document!.text, type }),
       });
-      const data = await res.json();
-      if (res.ok) onResult(type, data.result);
+      const data = (await res.json()) as { result?: string; error?: string };
+      if (res.ok && data.result != null) {
+        onResult(type, data.result);
+      } else {
+        onResult(type, `Erro: ${data?.error ?? res.statusText ?? 'Falha na análise'}`);
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Erro de rede';
+      onResult(type, `Erro: ${msg}`);
     } finally {
       setLoading(null);
     }
@@ -47,6 +58,7 @@ export function AnalysisButtons({
           key={id}
           onClick={() => run(id)}
           disabled={!!loading}
+          title={!hasDoc ? 'Envie ou cole um documento primeiro' : undefined}
           className="rounded-lg bg-zinc-100 px-2.5 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-emerald-100 hover:text-emerald-800 disabled:opacity-50 dark:bg-zinc-700 dark:text-zinc-300 dark:hover:bg-emerald-900/40 dark:hover:text-emerald-200"
         >
           {loading === id ? '...' : label}
