@@ -1,0 +1,19 @@
+{
+  "models": [
+    {
+      "title": "Groq Llama 3.3 (Bruto)",
+      "provider": "groq",
+      "model": "llama-3.3-70b-versatile"
+    },
+    {
+      "title": "DeepSeek Coder V2 (Local)",
+      "provider": "ollama",
+      "model": "deepseek-coder-v2:16b"
+    }
+  ],
+  "tabAutocompleteModel": {
+    "title": "Groq Autocomplete",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile"
+  }
+}
