@@ -1,151 +1,113 @@
-# Contextly — Intelligent Document Reading with AI
+<div align="center">
 
-![Full Stack Project](https://img.shields.io/badge/Full_Stack-Project-22c55e?style=for-the-badge&logo=vercel&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
-![Groq](https://img.shields.io/badge/Groq-Llama_3.3_70B-22c55e?style=flat-square)
+# 📄 Contextly
 
-> **RAG-powered document analysis** — Upload PDFs, DOCX, or paste text. Ask questions, extract insights, get citations.
+### Leia e converse com seus documentos usando IA
 
----
+Faça upload de **PDF, DOCX ou texto**, pergunte em linguagem natural e receba respostas com **citações rastreáveis** direto das fontes — sem alucinação, ancorado no que está no arquivo.
 
-## English
+[![version](https://img.shields.io/badge/version-1.0.0-22c55e?style=for-the-badge)](https://github.com/isaquefl/Contextly)
+[![license](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](#-licença)
 
-### Why this matters for companies
+[![Next.js](https://img.shields.io/badge/Next.js-16.1-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Groq](https://img.shields.io/badge/Groq-Llama_3.3_70B-f55036?style=flat-square)](https://groq.com/)
 
-| Scenario | Benefit |
-|----------|---------|
-| **Contracts & legal** | Analyze clauses and extract information without exposing data to external training |
-| **Internal docs** | Intelligent FAQ on manuals and procedures |
-| **Research** | Summaries, Q&A, and insights from articles in seconds |
-| **Onboarding** | New hires interact with training materials naturally |
-| **RAG proof of concept** | Foundation for Chat with PDFs, knowledge bases, semantic search |
-
-**Immediate ROI:** Less time on repetitive reading, consistent answers, traceable citations.
-
-### Tech stack
-
-| Layer | Stack |
-|-------|-------|
-| **Frontend** | React 19, Next.js 16 (App Router), Tailwind CSS 4 |
-| **AI & Chat** | Vercel AI SDK, Groq (Llama 3.3 70B) |
-| **Processing** | Intelligent chunking, relevance-based context injection |
-
-### Features
-
-- **File upload** — PDF, DOCX, TXT (max 50MB)
-- **Smart chunking** — Sends only relevant chunks to the model
-- **Strict / Assisted mode** — Answers only from document vs. light inference
-- **Citations** — Click chunks to highlight in the document
-- **Search** — Find text within the document
-- **Quick analysis** — Executive summary, obligations, risks, dates, monetary values
-- **Export** — Copy, Markdown, TXT
-- **Dark mode** — Full theme support
-- **Token estimate** — Cost awareness per session
-
-### How to run
-
-```bash
-git clone <repo>
-cd contextly
-npm install
-echo "GROQ_API_KEY=your-groq-key" > .env.local
-npm run dev
-```
-
-Open **http://localhost:3000**.
-
-### Project structure
-
-```
-src/
-├── app/
-│   ├── api/
-│   │   ├── chat/route.ts    # Chat with chunk-aware context
-│   │   ├── extract/route.ts # PDF/DOCX/TXT text extraction
-│   │   └── analyze/route.ts # Quick analysis (summaries, extractions)
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/
-│   ├── DocumentPanel.tsx
-│   ├── ChatPanel.tsx
-│   ├── FileUpload.tsx
-│   ├── AnalysisButtons.tsx
-│   └── Header.tsx
-├── context/AppContext.tsx
-└── lib/
-    ├── chunking.ts   # RAG chunking + relevance
-    └── types.ts
-```
+</div>
 
 ---
 
-## Português
+> 💬 **"Cadê a cláusula de rescisão deste contrato?"** — pergunte e receba a resposta com `[Chunk N]` apontando exatamente de onde ela veio.
 
-### Por que importa para empresas
+> 💬 Pensado para quem precisa de respostas **confiáveis**: o modo estrito responde **apenas** com base no documento. Se não está no texto, o Contextly diz que não encontrou — em vez de inventar.
 
-| Cenário | Benefício |
-|---------|-----------|
-| **Contratos e jurídico** | Analise cláusulas e extraia informações sem expor dados sensíveis |
-| **Documentação interna** | FAQ inteligente sobre manuais e procedimentos |
-| **Pesquisa** | Resumos, Q&A e insights de artigos em segundos |
-| **Onboarding** | Novos colaboradores interagem com materiais de treinamento de forma natural |
-| **POC RAG** | Base técnica para Chat com PDFs, bases de conhecimento e busca semântica |
+---
 
-### Stack
+## ✨ Funcionalidades
 
-| Camada | Tecnologias |
-|--------|-------------|
-| **Frontend** | React 19, Next.js 16 (App Router), Tailwind CSS 4 |
-| **IA e Chat** | Vercel AI SDK, Groq (Llama 3.3 70B) |
-| **Processamento** | Chunking inteligente, injeção de contexto por relevância |
+- **📤 Upload de documentos** — PDF, DOCX e TXT (até 50 MB), com extração e sanitização automática de texto.
+- **💬 Chat com RAG** — Perguntas em linguagem natural respondidas a partir do conteúdo do arquivo.
+- **🔖 Citações rastreáveis** — Respostas referenciam trechos no formato `[Chunk N]`, ligando cada afirmação à fonte.
+- **🎚️ Modo Estrito / Assistido** — Estrito responde só com o que está no documento; Assistido permite inferências cautelosas com sinalização de incerteza.
+- **🧠 Análises rápidas** — Resumo executivo, resumo técnico, pontos-chave, perguntas-chave, obrigações, riscos, datas, valores monetários e cláusulas críticas.
+- **⚡ Respostas em streaming** — Saída token a token via Vercel AI SDK para baixa latência.
 
-### Funcionalidades
+## 🧠 Como funciona
 
-- **Upload de arquivos** — PDF, DOCX, TXT (máx. 50MB)
-- **Chunking inteligente** — Envia apenas blocos relevantes ao modelo
-- **Modo Estrito / Assistido** — Responde só do documento vs. inferências leves
-- **Citações** — Clique em chunks para destacar no documento
-- **Busca interna** — Localize texto no documento
-- **Análise rápida** — Resumo executivo, obrigações, riscos, datas, valores
-- **Exportação** — Copiar, Markdown, TXT
-- **Modo escuro** — Suporte completo ao tema
-- **Estimativa de tokens** — Consciência de custo por sessão
+O pipeline de **RAG** (Retrieval-Augmented Generation) roda inteiramente nas API Routes do Next.js:
 
-### Como executar
+1. **Extração** (`/api/extract`) — O arquivo é lido em memória: `pdf-parse` para PDF, `mammoth` para DOCX e leitura direta para TXT. O texto é sanitizado (normaliza quebras de linha e espaços).
+2. **Chunking** (`lib/chunking.ts`) — O texto é dividido em blocos por parágrafo (~800 caracteres com 100 de sobreposição), cada um com um `id` para citação.
+3. **Recuperação** — A pergunta do usuário é comparada aos chunks por correspondência de termos; os mais relevantes (top 5) são selecionados como contexto.
+4. **Geração** (`/api/chat`) — Os chunks relevantes são injetados no system prompt e o modelo **Llama 3.3 70B** (via **Groq**) gera a resposta em streaming, citando as fontes com `[Chunk N]`.
+
+> As análises rápidas (`/api/analyze`) usam prompts dedicados sobre o texto extraído para gerar resumos e extrações estruturadas.
+
+## 🚀 Instalação e uso
 
 ```bash
-git clone <repo>
-cd contextly
+# 1. Clone o repositório
+git clone https://github.com/isaquefl/Contextly.git
+cd Contextly
+
+# 2. Instale as dependências
 npm install
-echo "GROQ_API_KEY=sua-chave-groq" > .env.local
+
+# 3. Configure as variáveis de ambiente
+#    Crie um arquivo .env.local na raiz com:
+echo "GROQ_API_KEY=" > .env.local
+#    (preencha com sua chave da Groq — https://console.groq.com)
+
+# 4. Ambiente de desenvolvimento
 npm run dev
+
+# 5. Build de produção
+npm run build
+npm start
 ```
 
 Acesse **http://localhost:3000**.
 
+## 🔐 Variáveis de ambiente
+
+| Variável        | Obrigatória | Descrição                                                                 |
+|-----------------|:-----------:|---------------------------------------------------------------------------|
+| `GROQ_API_KEY`  | ✅          | Chave da API Groq usada para chat e análises (modelo `llama-3.3-70b-versatile`). |
+
+> 🔒 Nunca versione sua chave. O `.env*` já está no `.gitignore`.
+
+## 🛠️ Stack
+
+| Camada          | Tecnologias                                                  |
+|-----------------|-------------------------------------------------------------|
+| **Frontend**    | Next.js 16 (App Router), React 19, TypeScript 5, Tailwind CSS 4 |
+| **IA & Chat**   | Vercel AI SDK (`ai`, `@ai-sdk/groq`), Groq — Llama 3.3 70B  |
+| **Documentos**  | `pdf-parse` (PDF), `mammoth` (DOCX), leitura nativa (TXT)   |
+| **RAG**         | Chunking por parágrafo + recuperação por relevância (`lib/chunking.ts`) |
+
+## 📄 Licença
+
+Distribuído sob a licença **MIT**. Sinta-se livre para usar, estudar e adaptar.
+
 ---
 
-## Security & performance
+<details>
+<summary><strong>🇬🇧 English (summary)</strong></summary>
 
-- **Chaves:** Apenas `.env` (nunca em `.ts` público). Repo isaquefl: nenhum dado sensível ou API key em código.
-- **Resultados:** Salve resumos/pesquisas em `.env` local ou em arquivos markdown de documentação, não em fontes versionadas.
-- Documents are processed in-memory; no permanent storage without consent
-- Text sanitization on extraction
-- Max file size: 50MB with clear feedback
-- Streaming responses for low latency
-- Chunk cache to avoid reprocessing
+**Contextly** is an AI-powered document reader built with Next.js and TypeScript. Upload a **PDF, DOCX or text file**, ask questions in natural language and get answers grounded in the document with traceable `[Chunk N]` citations.
 
-## Alternative: Gemini
+**RAG pipeline:** text is extracted (`pdf-parse` / `mammoth`), split into overlapping paragraph chunks, the most relevant chunks for each question are retrieved, injected into the prompt, and **Llama 3.3 70B** (via **Groq**) streams the answer. A **strict mode** answers only from the document, while an **assisted mode** allows careful inference. Quick analyses cover executive/technical summaries, key points, obligations, risks, dates, monetary values and critical clauses.
 
-```bash
-npm install @ai-sdk/google
-```
+**Setup:** `git clone` → `npm install` → set `GROQ_API_KEY` in `.env.local` → `npm run dev`.
 
-In `api/chat/route.ts` and `api/analyze/route.ts`, replace OpenAI with:
+</details>
 
-```ts
-import { google } from '@ai-sdk/google';
-model: google('gemini-1.5-flash')
-```
+---
 
-Set `GOOGLE_GENERATIVE_AI_API_KEY` in `.env.local`.
+<div align="center">
+
+**v1.0.0** · feito por **Isaque Félix**
+
+[isaquefl.vercel.app](https://isaquefl.vercel.app)
+
+</div>
