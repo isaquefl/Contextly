@@ -9,9 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@ai-sdk/groq": "^1.0.0",
-    "@ai-sdk/react": "^3.0.88",
-    "ai": "^6.0.86",
+    "@ai-sdk/groq": "^4.0.1",
+    "@ai-sdk/react": "^4.0.5",
+    "ai": "^7.0.4",
     "mammoth": "^1.11.0",
     "next": "16.1.6",
     "pdf-parse": "^2.4.5",

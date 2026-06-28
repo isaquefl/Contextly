@@ -78,7 +78,7 @@ export async function POST(req: Request) {
       : FALLBACK_SYSTEM;
 
     const result = streamText({
-      model: groq(GROQ_MODEL) as unknown as Parameters<typeof streamText>[0]['model'],
+      model: groq(GROQ_MODEL),
       system: systemPrompt,
       messages: await convertToModelMessages(messages),
     });
