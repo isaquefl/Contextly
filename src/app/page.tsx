@@ -21,11 +21,11 @@ function MainContent() {
     <ThemeWrapper>
       <div className="flex h-screen flex-col bg-zinc-50 dark:bg-zinc-950">
         <Header />
-        <div className="flex flex-1 overflow-hidden">
-          <div className="w-1/2 border-r border-zinc-200 dark:border-zinc-800">
+        <div className="flex flex-1 flex-col overflow-hidden md:flex-row">
+          <div className="h-1/2 border-b border-zinc-200 dark:border-zinc-800 md:h-auto md:w-1/2 md:border-b-0 md:border-r">
             <DocumentPanel />
           </div>
-          <div className="w-1/2">
+          <div className="h-1/2 md:h-auto md:w-1/2">
             <ChatPanel />
           </div>
         </div>

@@ -136,16 +136,44 @@ export function ChatPanel() {
 
       <div className="flex-1 overflow-y-auto p-4">
         {messages.length === 0 && analysisBlocks.length === 0 && (
-          <div className="flex h-full flex-col items-center justify-center text-center">
-            <p className="text-zinc-500 dark:text-zinc-400">
-              {hasDoc
-                ? 'Ask questions about your document or use the buttons above.'
-                : 'Upload or paste a document to get started.'}
-            </p>
-            {hasDoc && (
-              <p className="mt-2 text-xs text-zinc-400">
-                ~{estimatedTokens.toLocaleString()} tokens in context
-              </p>
+          <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-2xl dark:bg-emerald-900/40">
+              💬
+            </div>
+            {hasDoc ? (
+              <>
+                <p className="font-medium text-zinc-700 dark:text-zinc-200">
+                  Pergunte qualquer coisa sobre o seu documento
+                </p>
+                <p className="max-w-xs text-sm text-zinc-500 dark:text-zinc-400">
+                  Ou use os botões de análise acima (resumo, pontos-chave e mais).
+                </p>
+                <p className="mt-1 text-xs text-zinc-400">
+                  ~{estimatedTokens.toLocaleString()} tokens no contexto
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="font-medium text-zinc-700 dark:text-zinc-200">
+                  Comece a conversar
+                </p>
+                <p className="max-w-sm text-sm text-zinc-500 dark:text-zinc-400">
+                  Pergunte o que quiser agora mesmo — ou anexe um documento ao lado
+                  para que a IA responda com base apenas no conteúdo dele.
+                </p>
+                <div className="mt-2 flex flex-wrap justify-center gap-2">
+                  {['Explique a teoria da relatividade', 'Me dê 5 ideias de post', 'Escreva um e-mail formal'].map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => sendMessage({ text: s })}
+                      className="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-600 transition hover:border-emerald-500 hover:text-emerald-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         )}
@@ -207,7 +235,7 @@ export function ChatPanel() {
             name="message"
             rows={1}
             disabled={status === 'streaming'}
-            placeholder="Ask a question or upload a document..."
+            placeholder="Pergunte qualquer coisa ou anexe um documento..."
             className="flex-1 resize-none rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 disabled:opacity-50 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
@@ -221,7 +249,7 @@ export function ChatPanel() {
             disabled={status === 'streaming'}
             className="rounded-xl bg-emerald-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50 dark:bg-emerald-500 dark:hover:bg-emerald-600"
           >
-            Send
+            Enviar
           </button>
         </div>
       </form>

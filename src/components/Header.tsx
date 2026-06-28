@@ -7,9 +7,14 @@ export function Header() {
 
   return (
     <header className="flex h-14 items-center justify-between border-b border-zinc-200 bg-white px-4 dark:border-zinc-800 dark:bg-zinc-900">
-      <h1 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-        Contextly
-      </h1>
+      <div className="flex items-baseline gap-2">
+        <h1 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+          Contextly
+        </h1>
+        <span className="hidden text-xs text-zinc-400 sm:inline">
+          leitura de documentos com IA
+        </span>
+      </div>
       <button
         onClick={() => setDarkMode(!darkMode)}
         className="rounded-lg p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
